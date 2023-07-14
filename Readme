@@ -1,0 +1,10 @@
+1) docker create volume shared-volume
+2) docker create network amqp-network
+3) docker run -d --hostname my-rabbit --name some-rabbit -p 15672:15672 -p 5672:5672 --network ampq-network  rabbitmq:3-management
+4) docker build -t publisher .
+5) docker run --name Producer2 -v shared-volume:/usr/src/app/shared-data/logs --network amqp-network -d -p 9080:10001 publisher   
+6) docker run --name Producer1 -v shared-volume:/usr/src/app/shared-data/logs --network amqp-network -d -p 8080:10001 publisher 
+7) docker build -t consumer .
+8)  docker run --name Consumer2 --network amqp-network -d -p 10080:10001  consumer
+9)  docker run --name Consumer1 --network amqp-network -d -p 11080:10001  consumer
+Note Change the api path for consumer2 from producer1 to producer2
